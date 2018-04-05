@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var charArr = [];
+        var initArr = [];
+        var min = 0;
+        arrSort = function(value, character, arr1, arr2){
+          console.log("sorting");
+          var initHold = [];
+          var charHold = [];
+          var i = arr1.length - 1
+            while (i >= 0) {
+                if(value > arr1[i]){
+                  console.log('rearranging ' + arr2[i]);
+                  initHold.push(arr1[i]);
+                  charHold.push(arr2[i]);
+                  arr1.pop();
+                  arr2.pop();
+                }
+                else if (value === arr1[i]){
+                  var valueTie = prompt("Please enter " + character + "'s initiative modifier");
+                  var arr1Tie = prompt("Please enter " + arr2[i] + "s initiative modifier");
+                  console.log(valueTie);
+                  console.log(arr1Tie);
+                  if(valueTie >= arr1Tie){
+                    console.log('rearranging ' + arr2[i]);
+                    initHold.push(arr1[i]);
+                    charHold.push(arr2[i]);
+                    arr1.pop();
+                    arr2.pop();
+                  }else{
+                    break;
+                  }
+                }
+                i--;
+              }
+              arr1.push(value);
+              arr2.push(character);
+            for (var i = initHold.length - 1; i >= 0; i--){
+              console.log('re-inserting');
+              arr1.push(initHold[i]);
+              arr2.push(charHold[i]);
+            }
+            return
+          }
+        $( "#initGet" ).submit(function( event ) {
+          console.log(min);
+          var charInput = document.getElementById('character');
+          var initInput = document.getElementById('initiative');
+          console.log(initInput);
+          var tempKey = charInput.value;
+          var tempValue = Number(initInput.value);
+          if (initArr.length === 0 || tempValue < min) {
+            min = initInput.value;
+            initArr.push(tempValue);
+            charArr.push(tempKey);
+          }else{
+            arrSort(tempValue, tempKey, initArr, charArr);
+          }
+          $("td").remove();
+          for(var i = 0; i < charArr.length; i++){
+            $("#initDisplay").append("<tr> <td> " + charArr[i] + "</td> <td> " + initArr[i] +"</td> </tr>" );
+          }
+          console.log(charArr);
+          console.log(initArr);
+          event.preventDefault();
+        })
+      });
+    </script>
+  </head>
+  <body>
+    <form id="initGet">
+      <b>Character Name</b>
+      <input id="character" type="text"></input>
+      <b>Initiative</b>
+      <input id="initiative" type="number"></input>
+      <input type="submit"></input>
+    </form>
+    <table id="initDisplay">
+      <th>Character</th>
+      <th>Initiative</th>
+    </table>
+
+    <div id="initList">
+    </div>
+
+
+
+  </body>
+</html>
